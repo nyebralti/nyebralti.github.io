@@ -83,10 +83,6 @@ Nyebralti Weather, Android cihazlar için geliştirilmiş modern ve kullanıcı 
 ✅ Modern Tasarım: 2024 tasarım trendlerine uygun  
 ✅ Kolay Kullanım: Sezgirel ve basit arayüz  
 
-## 📞 İletişim
-
-Bu proje hakkında sorularınız için GitHub Issues kullanabilirsiniz.
-
 ---
 
 © 2024 Nyebralti Weather. Tüm hakları saklıdır.
