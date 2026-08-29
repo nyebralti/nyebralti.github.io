@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nyebralti | Projelerim</title>
+
+    <meta name="description" content="Nyebralti'nin projeleri ve çalışmaları.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #08090d;
+            --bg-secondary: #0e1017;
+            --card: rgba(255, 255, 255, 0.055);
+            --card-hover: rgba(255, 255, 255, 0.085);
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #f5f7fb;
+            --muted: #9ba3b4;
+            --accent: #7c5cff;
+            --accent-2: #4f8cff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 50% -20%,
+                    rgba(124, 92, 255, 0.22),
+                    transparent 40%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ---------------- HEADER ---------------- */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            background: rgba(8, 9, 13, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+
+            transition: 0.2s ease;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        /* ---------------- HERO ---------------- */
+
+        .hero {
+            min-height: 72vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 100px 20px 80px;
+
+            position: relative;
+        }
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            background: rgba(124, 92, 255, 0.15);
+
+            filter: blur(100px);
+            border-radius: 50%;
+
+            top: 10%;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+
+            max-width: 850px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 14px;
+
+            border: 1px solid var(--border);
+            border-radius: 999px;
+
+            background: rgba(255, 255, 255, 0.04);
+
+            color: #cbd1df;
+
+            font-size: 13px;
+
+            margin-bottom: 24px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+
+            background: #55d88a;
+            border-radius: 50%;
+
+            box-shadow: 0 0 12px rgba(85, 216, 138, 0.7);
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 88px);
+            line-height: 0.98;
+
+            letter-spacing: -5px;
+
+            margin-bottom: 28px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(
+                110deg,
+                #ffffff,
+                #a991ff,
+                #6498ff
+            );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+
+            font-size: 18px;
+            line-height: 1.7;
+
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+
+            margin-top: 34px;
+
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 13px 20px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 650;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+        }
+
+        .button-primary {
+            background: white;
+            color: #08090d;
+        }
+
+        .button-secondary {
+            background: rgba(255, 255, 255, 0.055);
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        /* ---------------- PROJECTS ---------------- */
+
+        .projects-section {
+            width: min(1200px, 90%);
+
+            margin: auto;
+
+            padding: 70px 0 120px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            letter-spacing: -1.5px;
+        }
+
+        .section-title p {
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .project-count {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .projects-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fill, minmax(280px, 1fr));
+
+            gap: 18px;
+        }
+
+        /* ---------------- PROJECT CARD ---------------- */
+
+        .project-card {
+            position: relative;
+
+            padding: 25px;
+
+            min-height: 230px;
+
+            display: flex;
+            flex-direction: column;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.065),
+                    rgba(255, 255, 255, 0.025)
+                );
+
+            overflow: hidden;
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .project-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            background: rgba(124, 92, 255, 0.10);
+
+            filter: blur(60px);
+
+            top: -100px;
+            right: -70px;
+
+            pointer-events: none;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+
+            border-color: rgba(124, 92, 255, 0.4);
+
+            background: var(--card-hover);
+        }
+
+        .project-name {
+            font-size: 22px;
+
+            letter-spacing: -0.5px;
+
+            margin-bottom: 12px;
+
+            position: relative;
+        }
+
+        .project-description {
+            color: var(--muted);
+
+            font-size: 14px;
+
+            line-height: 1.65;
+
+            flex: 1;
+
+            position: relative;
+        }
+
+        .project-footer {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 24px;
+
+            position: relative;
+        }
+
+        .repo-name {
+            color: #7f8798;
+
+            font-size: 12px;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 9px 13px;
+
+            border-radius: 10px;
+
+            background: rgba(255, 255, 255, 0.07);
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 650;
+
+            white-space: nowrap;
+
+            transition: 0.2s ease;
+        }
+
+        .project-link:hover {
+            background: var(--accent);
+        }
+
+        /* ---------------- LOADING ---------------- */
+
+        .loading {
+            grid-column: 1 / -1;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .loader {
+            width: 30px;
+            height: 30px;
+
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+
+            border-radius: 50%;
+
+            animation: spin 0.8s linear infinite;
+
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ---------------- ERROR ---------------- */
+
+        .error {
+            grid-column: 1 / -1;
+
+            padding: 35px;
+
+            border: 1px solid rgba(255, 80, 100, 0.2);
+
+            background: rgba(255, 80, 100, 0.05);
+
+            border-radius: 16px;
+
+            text-align: center;
+
+            color: #ff9ba8;
+        }
+
+        /* ---------------- EMPTY ---------------- */
+
+        .empty {
+            grid-column: 1 / -1;
+
+            padding: 60px;
+
+            text-align: center;
+
+            border: 1px dashed var(--border);
+
+            border-radius: 18px;
+
+            color: var(--muted);
+        }
+
+        /* ---------------- FOOTER ---------------- */
+
+        footer {
+            border-top: 1px solid var(--border);
+
+            padding: 30px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+
+            color: #737b8d;
+
+            font-size: 13px;
+        }
+
+        footer a {
+            color: #aeb5c5;
+            text-decoration: none;
+        }
+
+        /* ---------------- MOBILE ---------------- */
+
+        @media (max-width: 650px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            nav {
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 13px;
+            }
+
+            .hero {
+                min-height: 65vh;
+                padding-top: 70px;
+            }
+
+            .hero h1 {
+                letter-spacing: -3px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .projects-section {
+                width: 90%;
+            }
+
+            .section-header {
+                align-items: start;
+                flex-direction: column;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <a class="logo" href="#">
+            Nyebralti<span>.</span>
+        </a>
+
+        <nav>
+            <a href="#home">Ana Sayfa</a>
+            <a href="#projects">Projeler</a>
+            <a
+                href="https://github.com/nyebralti"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                GitHub
+            </a>
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <main id="home">
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="badge">
+                    <span class="badge-dot"></span>
+                    Projelerim açık
+                </div>
+
+                <h1>
+                    Fikirlerden
+                    <br>
+                    <span>gerçek projelere.</span>
+                </h1>
+
+                <p>
+                    Burada geliştirdiğim projeleri, deneyleri ve
+                    çalışmalarımı bulabilirsin.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="#projects"
+                        class="button button-primary"
+                    >
+                        Projelerimi Gör
+                    </a>
+
+                    <a
+                        href="https://github.com/nyebralti"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="button button-secondary"
+                    >
+                        GitHub →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECTS -->
+
+        <section
+            class="projects-section"
+            id="projects"
+        >
+
+            <div class="section-header">
+
+                <div class="section-title">
+
+                    <h2>Projelerim</h2>
+
+                    <p>
+                        GitHub repolarımdan otomatik olarak yüklenir.
+                    </p>
+
+                </div>
+
+                <div
+                    class="project-count"
+                    id="projectCount"
+                >
+                    Yükleniyor...
+                </div>
+
+            </div>
+
+
+            <div
+                class="projects-grid"
+                id="projectsContainer"
+            >
+
+                <div class="loading">
+
+                    <div class="loader"></div>
+
+                    Projeler yükleniyor...
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <span>
+            © <span id="year"></span> Nyebralti
+        </span>
+
+        <a
+            href="https://github.com/nyebralti"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            GitHub
+        </a>
+
+    </footer>
+
+
+    <script>
+
+        const username = "nyebralti";
+
+        const container =
+            document.getElementById("projectsContainer");
+
+        const projectCount =
+            document.getElementById("projectCount");
+
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+
+        async function loadProjects() {
+
+            try {
+
+                /*
+                 * GitHub'daki bütün public repoları al.
+                 */
+
+                const response = await fetch(
+                    `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
+                );
+
+                if (!response.ok) {
+                    throw new Error("GitHub API erişilemedi.");
+                }
+
+                const repos = await response.json();
+
+                container.innerHTML = "";
+
+                let projects = [];
+
+
+                /*
+                 * Her repoyu kontrol et.
+                 */
+
+                for (const repo of repos) {
+
+                    /*
+                     * Ana siteyi atla.
+                     */
+
+                    if (
+                        repo.name.toLowerCase() ===
+                        `${username}.github.io`
+                    ) {
+                        continue;
+                    }
+
+
+                    try {
+
+                        /*
+                         * Repodaki info.json dosyasını oku.
+                         */
+
+                        const infoResponse = await fetch(
+                            `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/info.json`
+                        );
+
+
+                        /*
+                         * info.json yoksa bu repo proje değildir.
+                         */
+
+                        if (!infoResponse.ok) {
+                            continue;
+                        }
+
+
+                        const info =
+                            await infoResponse.json();
+
+
+                        /*
+                         * Görünürlük false ise gösterme.
+                         *
+                         * "gorunurluluk": true
+                         */
+
+                        if (info.gorunurluluk !== true) {
+                            continue;
+                        }
+
+
+                        projects.push({
+                            repo: repo,
+                            info: info
+                        });
+
+                    } catch (error) {
+
+                        /*
+                         * info.json bozuksa veya okunamazsa
+                         * bu repoyu atla.
+                         */
+
+                        console.warn(
+                            `${repo.name} okunamadı.`,
+                            error
+                        );
+
+                    }
+
+                }
+
+
+                /*
+                 * Proje sayısını göster.
+                 */
+
+                projectCount.textContent =
+                    `${projects.length} proje`;
+
+
+                /*
+                 * Hiç proje yoksa.
+                 */
+
+                if (projects.length === 0) {
+
+                    container.innerHTML = `
+                        <div class="empty">
+                            Henüz yayınlanabilir bir proje bulunamadı.
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                /*
+                 * Proje kartlarını oluştur.
+                 */
+
+                for (const project of projects) {
+
+                    const repo = project.repo;
+                    const info = project.info;
+
+
+                    const card =
+                        document.createElement("article");
+
+                    card.className = "project-card";
+
+
+                    /*
+                     * HTML injection riskini önlemek için
+                     * kullanıcı verilerini textContent ile ekliyoruz.
+                     */
+
+                    const name =
+                        document.createElement("h3");
+
+                    name.className = "project-name";
+
+                    name.textContent =
+                        info.isim || repo.name;
+
+
+                    const description =
+                        document.createElement("p");
+
+                    description.className =
+                        "project-description";
+
+                    description.textContent =
+                        info.aciklama ||
+                        "Bu proje için açıklama eklenmemiş.";
+
+
+                    const footer =
+                        document.createElement("div");
+
+                    footer.className =
+                        "project-footer";
+
+
+                    const repoName =
+                        document.createElement("span");
+
+                    repoName.className =
+                        "repo-name";
+
+                    repoName.textContent =
+                        repo.name;
+
+
+                    const link =
+                        document.createElement("a");
+
+                    link.className =
+                        "project-link";
+
+                    link.href =
+                        `https://${username}.github.io/${repo.name}/`;
+
+                    link.target = "_blank";
+
+                    link.rel =
+                        "noopener noreferrer";
+
+                    link.textContent =
+                        "Projeyi Aç →";
+
+
+                    footer.appendChild(repoName);
+
+                    footer.appendChild(link);
+
+
+                    card.appendChild(name);
+
+                    card.appendChild(description);
+
+                    card.appendChild(footer);
+
+
+                    container.appendChild(card);
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                projectCount.textContent =
+                    "Hata";
+
+                container.innerHTML = `
+                    <div class="error">
+                        <strong>Projeler yüklenemedi.</strong>
+                        <br><br>
+                        GitHub API'ye erişirken bir sorun oluştu.
+                        Birkaç saniye sonra sayfayı yenilemeyi deneyebilirsin.
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        /*
+         * Sayfa açıldığında projeleri yükle.
+         */
+
+        loadProjects();
+
+    </script>
+
+</body>
+</html>
