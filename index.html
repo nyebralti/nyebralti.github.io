@@ -6,7 +6,10 @@
 
     <title>Nyebralti | Projelerim</title>
 
-    <meta name="description" content="Nyebralti'nin projeleri ve çalışmaları.">
+    <meta
+        name="description"
+        content="Nyebralti'nin projeleri ve çalışmaları."
+    >
 
     <style>
         * {
@@ -177,7 +180,8 @@
             background: #55d88a;
             border-radius: 50%;
 
-            box-shadow: 0 0 12px rgba(85, 216, 138, 0.7);
+            box-shadow:
+                0 0 12px rgba(85, 216, 138, 0.7);
         }
 
         .hero h1 {
@@ -429,6 +433,32 @@
             background: var(--accent);
         }
 
+        /* ---------------- GAME BADGE ---------------- */
+
+        .game-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            width: fit-content;
+
+            padding: 5px 9px;
+
+            margin-bottom: 12px;
+
+            border: 1px solid rgba(124, 92, 255, 0.25);
+            border-radius: 999px;
+
+            background: rgba(124, 92, 255, 0.10);
+
+            color: #b9aaff;
+
+            font-size: 11px;
+            font-weight: 650;
+
+            position: relative;
+        }
+
         /* ---------------- LOADING ---------------- */
 
         .loading {
@@ -579,8 +609,15 @@
         </a>
 
         <nav>
-            <a href="#home">Ana Sayfa</a>
-            <a href="#projects">Projeler</a>
+
+            <a href="#home">
+                Ana Sayfa
+            </a>
+
+            <a href="#projects">
+                Projeler
+            </a>
+
             <a
                 href="https://github.com/nyebralti"
                 target="_blank"
@@ -588,6 +625,7 @@
             >
                 GitHub
             </a>
+
         </nav>
 
     </header>
@@ -602,8 +640,11 @@
             <div class="hero-content">
 
                 <div class="badge">
+
                     <span class="badge-dot"></span>
+
                     Projelerim açık
+
                 </div>
 
                 <h1>
@@ -653,7 +694,9 @@
 
                 <div class="section-title">
 
-                    <h2>Projelerim</h2>
+                    <h2>
+                        Projelerim
+                    </h2>
 
                     <p>
                         GitHub repolarımdan otomatik olarak yüklenir.
@@ -715,12 +758,19 @@
         const username = "nyebralti";
 
         const container =
-            document.getElementById("projectsContainer");
+            document.getElementById(
+                "projectsContainer"
+            );
 
         const projectCount =
-            document.getElementById("projectCount");
+            document.getElementById(
+                "projectCount"
+            );
 
-        document.getElementById("year").textContent =
+
+        document.getElementById(
+            "year"
+        ).textContent =
             new Date().getFullYear();
 
 
@@ -729,101 +779,151 @@
             try {
 
                 /*
-                 * GitHub'daki bütün public repoları al.
+                 * GitHub repolarını al.
                  */
 
-                const response = await fetch(
-                    `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`
-                );
+                const response =
+                    await fetch(
+                        `https://api.github.com/users/${username}/repos?type=owner&per_page=100&sort=updated&_=${Date.now()}`,
+                        {
+                            cache: "no-store"
+                        }
+                    );
+
 
                 if (!response.ok) {
-                    throw new Error("GitHub API erişilemedi.");
+
+                    throw new Error(
+                        `GitHub API hata kodu: ${response.status}`
+                    );
+
                 }
 
-                const repos = await response.json();
 
-                container.innerHTML = "";
-
-                let projects = [];
+                const repos =
+                    await response.json();
 
 
                 /*
-                 * Her repoyu kontrol et.
+                 * Ana site reposunu çıkar.
                  */
 
-                for (const repo of repos) {
-
-                    /*
-                     * Ana siteyi atla.
-                     */
-
-                    if (
-                        repo.name.toLowerCase() ===
-                        `${username}.github.io`
-                    ) {
-                        continue;
-                    }
-
-
-                    try {
-
-                        /*
-                         * Repodaki info.json dosyasını oku.
-                         */
-
-                        const infoResponse = await fetch(
-                            `https://raw.githubusercontent.com/${username}/${repo.name}/${repo.default_branch}/info.json`
-                        );
-
-
-                        /*
-                         * info.json yoksa bu repo proje değildir.
-                         */
-
-                        if (!infoResponse.ok) {
-                            continue;
-                        }
-
-
-                        const info =
-                            await infoResponse.json();
-
-
-                        /*
-                         * Görünürlük false ise gösterme.
-                         *
-                         * "gorunurluluk": true
-                         */
-
-                        if (info.gorunurluluk !== true) {
-                            continue;
-                        }
-
-
-                        projects.push({
-                            repo: repo,
-                            info: info
-                        });
-
-                    } catch (error) {
-
-                        /*
-                         * info.json bozuksa veya okunamazsa
-                         * bu repoyu atla.
-                         */
-
-                        console.warn(
-                            `${repo.name} okunamadı.`,
-                            error
-                        );
-
-                    }
-
-                }
+                const projectRepos =
+                    repos.filter(
+                        repo =>
+                            repo.name.toLowerCase() !==
+                            `${username}.github.io`
+                    );
 
 
                 /*
-                 * Proje sayısını göster.
+                 * info.json dosyalarını kontrol et.
+                 */
+
+                const results =
+                    await Promise.all(
+
+                        projectRepos.map(
+                            async repo => {
+
+                                try {
+
+                                    /*
+                                     * info.json URL'si.
+                                     */
+
+                                    const infoUrl =
+                                        `https://raw.githubusercontent.com/${username}/${repo.name}/${encodeURIComponent(repo.default_branch)}/info.json`;
+
+
+                                    /*
+                                     * Cache kapalı.
+                                     */
+
+                                    const infoResponse =
+                                        await fetch(
+                                            `${infoUrl}?_=${Date.now()}`,
+                                            {
+                                                cache: "no-store"
+                                            }
+                                        );
+
+
+                                    /*
+                                     * info.json yoksa hata.
+                                     */
+
+                                    if (
+                                        !infoResponse.ok
+                                    ) {
+
+                                        throw new Error(
+                                            `info.json okunamadı: ${repo.name} (${infoResponse.status})`
+                                        );
+
+                                    }
+
+
+                                    /*
+                                     * JSON'u parse et.
+                                     */
+
+                                    const info =
+                                        await infoResponse.json();
+
+
+                                    /*
+                                     * gorunurluluk false ise
+                                     * bu repo gösterilmez.
+                                     */
+
+                                    if (
+                                        info.gorunurluluk !== true
+                                    ) {
+
+                                        return null;
+
+                                    }
+
+
+                                    return {
+                                        repo: repo,
+                                        info: info
+                                    };
+
+                                }
+                                catch (error) {
+
+                                    /*
+                                     * HATALI REPO BURADA ATLANIR.
+                                     *
+                                     * Diğer repolar yüklenmeye devam eder.
+                                     */
+                                    console.error(error);
+
+                                    return null;
+
+                                }
+
+                            }
+                        )
+
+                    );
+
+
+                /*
+                 * Geçerli projeleri al.
+                 */
+
+                const projects =
+                    results.filter(
+                        project =>
+                            project !== null
+                    );
+
+
+                /*
+                 * Sayaç.
                  */
 
                 projectCount.textContent =
@@ -831,10 +931,20 @@
 
 
                 /*
+                 * Kartları yeniden oluştur.
+                 */
+
+                container.innerHTML =
+                    "";
+
+
+                /*
                  * Hiç proje yoksa.
                  */
 
-                if (projects.length === 0) {
+                if (
+                    projects.length === 0
+                ) {
 
                     container.innerHTML = `
                         <div class="empty">
@@ -843,6 +953,7 @@
                     `;
 
                     return;
+
                 }
 
 
@@ -850,34 +961,90 @@
                  * Proje kartlarını oluştur.
                  */
 
-                for (const project of projects) {
+                for (
+                    const project of projects
+                ) {
 
-                    const repo = project.repo;
-                    const info = project.info;
+                    const repo =
+                        project.repo;
 
-
-                    const card =
-                        document.createElement("article");
-
-                    card.className = "project-card";
+                    const info =
+                        project.info;
 
 
                     /*
-                     * HTML injection riskini önlemek için
-                     * kullanıcı verilerini textContent ile ekliyoruz.
+                     * game OPSİYONELDİR.
+                     *
+                     * true → oyun
+                     * false → normal
+                     * yok → normal
+                     */
+                    const isGame =
+                        info.game === true;
+
+
+                    /*
+                     * CARD
+                     */
+
+                    const card =
+                        document.createElement(
+                            "article"
+                        );
+
+                    card.className =
+                        "project-card";
+
+
+                    /*
+                     * GAME BADGE
+                     */
+
+                    if (isGame) {
+
+                        const gameBadge =
+                            document.createElement(
+                                "div"
+                            );
+
+                        gameBadge.className =
+                            "game-badge";
+
+                        gameBadge.textContent =
+                            "🎮 Oyun";
+
+                        card.appendChild(
+                            gameBadge
+                        );
+
+                    }
+
+
+                    /*
+                     * İSİM
                      */
 
                     const name =
-                        document.createElement("h3");
+                        document.createElement(
+                            "h3"
+                        );
 
-                    name.className = "project-name";
+                    name.className =
+                        "project-name";
 
                     name.textContent =
-                        info.isim || repo.name;
+                        info.isim ||
+                        repo.name;
 
+
+                    /*
+                     * AÇIKLAMA
+                     */
 
                     const description =
-                        document.createElement("p");
+                        document.createElement(
+                            "p"
+                        );
 
                     description.className =
                         "project-description";
@@ -887,15 +1054,27 @@
                         "Bu proje için açıklama eklenmemiş.";
 
 
+                    /*
+                     * FOOTER
+                     */
+
                     const footer =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
                     footer.className =
                         "project-footer";
 
 
+                    /*
+                     * REPO ADI
+                     */
+
                     const repoName =
-                        document.createElement("span");
+                        document.createElement(
+                            "span"
+                        );
 
                     repoName.className =
                         "repo-name";
@@ -904,8 +1083,14 @@
                         repo.name;
 
 
+                    /*
+                     * PROJE LİNKİ
+                     */
+
                     const link =
-                        document.createElement("a");
+                        document.createElement(
+                            "a"
+                        );
 
                     link.className =
                         "project-link";
@@ -913,46 +1098,77 @@
                     link.href =
                         `https://${username}.github.io/${repo.name}/`;
 
-                    link.target = "_blank";
+                    link.target =
+                        "_blank";
 
                     link.rel =
                         "noopener noreferrer";
 
+
+                    /*
+                     * Oyun veya normal proje.
+                     */
+
                     link.textContent =
-                        "Projeyi Aç →";
+                        isGame
+                            ? "Oyunu Aç →"
+                            : "Projeyi Aç →";
 
 
-                    footer.appendChild(repoName);
+                    /*
+                     * KARTI BİRLEŞTİR
+                     */
 
-                    footer.appendChild(link);
+                    footer.appendChild(
+                        repoName
+                    );
 
+                    footer.appendChild(
+                        link
+                    );
 
-                    card.appendChild(name);
+                    card.appendChild(
+                        name
+                    );
 
-                    card.appendChild(description);
+                    card.appendChild(
+                        description
+                    );
 
-                    card.appendChild(footer);
+                    card.appendChild(
+                        footer
+                    );
 
-
-                    container.appendChild(card);
+                    container.appendChild(
+                        card
+                    );
 
                 }
 
-            } catch (error) {
+            }
+            catch (error) {
+
+                /*
+                 * Genel GitHub API hatası.
+                 */
 
                 console.error(error);
 
-                projectCount.textContent =
-                    "Hata";
 
-                container.innerHTML = `
-                    <div class="error">
-                        <strong>Projeler yüklenemedi.</strong>
-                        <br><br>
-                        GitHub API'ye erişirken bir sorun oluştu.
-                        Birkaç saniye sonra sayfayı yenilemeyi deneyebilirsin.
-                    </div>
-                `;
+                /*
+                 * Genel hata durumunda mevcut
+                 * projeleri silmeden hata göster.
+                 *
+                 * Böylece geçici bir API problemi
+                 * yüzünden ekran boşalmaz.
+                 */
+
+                projectCount.textContent =
+                    "Yenileme hatası";
+
+                console.warn(
+                    "Projeler yenilenemedi. Mevcut liste korunuyor."
+                );
 
             }
 
@@ -960,10 +1176,22 @@
 
 
         /*
-         * Sayfa açıldığında projeleri yükle.
+         * İlk yükleme.
          */
 
         loadProjects();
+
+
+        /*
+         * HER 10 SANİYEDE BİR YENİLE.
+         *
+         * 10000 ms = 10 saniye
+         */
+
+        setInterval(
+            loadProjects,
+            10000
+        );
 
     </script>
 
